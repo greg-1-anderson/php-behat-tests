@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Set the $PATH to include the global composer bin directory.
+PATH=$PATH:~/.composer/vendor/bin
+
+# Go to base level of project
+cd "$(dirname $0)/../../"
+
+if [ -z "$PHPVERSION" ]
+then
+  echo 'No php version to test specified. Set PHPVERSION to "72" or "71" etc.'
+  exit 1
+fi
+
+TERMINUS_SITE=php-info
+TERMINUS_ENV="v$PHPVERSION-stage"
+
+echo "::::::::::::::::::::::::::::::::::::::::::::::::"
+echo "Behat test site: $TERMINUS_SITE.$TERMINUS_ENV"
+echo "::::::::::::::::::::::::::::::::::::::::::::::::"
+echo
+
+# Exit immediately on errors, and echo commands as they are executed.
+set -ex
+
+# Drush Behat driver fails without this option.
+echo "\$options['strict'] = 0;" >> ~/.drush/pantheon.aliases.drushrc.php
+
+export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"base_url" : "http://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/"}, "Drupal\\DrupalExtension" : {"drush" :   {  "alias":  "@pantheon.'$TERMINUS_SITE'.'$TERMINUS_ENV'" }}}}'
+(cd tests && ../vendor/bin/behat --config=behat-php-info.yml "$@")
+
+set +ex
+
+TERMINUS_SITE=yolo-d8
+TERMINUS_ENV="v$PHPVERSION"
+
+
+echo "::::::::::::::::::::::::::::::::::::::::::::::::"
+echo "Behat test site: $TERMINUS_SITE.$TERMINUS_ENV"
+echo "::::::::::::::::::::::::::::::::::::::::::::::::"
+echo
+
+# Exit immediately on errors, and echo commands as they are executed.
+set -ex
+
+# Drush Behat driver fails without this option.
+echo "\$options['strict'] = 0;" >> ~/.drush/pantheon.aliases.drushrc.php
+
+export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"base_url" : "http://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/"}, "Drupal\\DrupalExtension" : {"drush" :   {  "alias":  "@pantheon.'$TERMINUS_SITE'.'$TERMINUS_ENV'" }}}}'
+(cd tests && ../vendor/bin/behat --config=behat-yolo-d8.yml "$@")
+
+set +ex

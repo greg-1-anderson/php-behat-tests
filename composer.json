@@ -1,0 +1,44 @@
+{
+  "name": "pantheon-systems/php-behat-tests",
+  "description": "Some behat tests for confirming PHP functionality on Panthon.",
+  "type": "project",
+  "license": "MIT",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://packages.drupal.org/8"
+    }
+  ],
+  "require": {
+    "composer/installers": "^1.0.20",
+    "cweagans/composer-patches": "^1.0"
+  },
+  "require-dev": {
+    "mikey179/vfsstream": "^1.2",
+    "behat/behat": "3.*",
+    "behat/mink": "^1.7",
+    "behat/mink-extension": "^2.2",
+    "behat/mink-goutte-driver": "^1.2",
+    "jcalderonzumba/gastonjs": "^1.0.2",
+    "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
+    "drupal/drupal-extension": "^3.1",
+    "drush-ops/behat-drush-endpoint": "^0.0.4",
+    "phpunit/phpunit": "^4.8",
+    "symfony/css-selector": "^2.8"
+  },
+  "minimum-stability": "alpha",
+  "prefer-stable": true,
+  "scripts": {
+    "behat": "tests/scripts/run-behat"
+  },
+  "extra": {
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "platform": {
+      "php": "7.0"
+    }
+  }
+}
